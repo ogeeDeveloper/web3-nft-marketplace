@@ -31,23 +31,35 @@ const MenuItems = ({ isMobile, active, setActive }) => {
   )
 }
 
-const ButtonGroup = () => {
+const ButtonGroup = ({ handleCreate, hadleConnectWallet }) => {
   const hasConnected = false
 
   return hasConnected ? (
-    <Button />
-  ) : <Button />
+    <Button btnName="Create" classStyles="mx-2 rounded-xl" handleClick={handleCreate} />
+  ) : <Button btnName="Connect" classStyles="mx-2 rounded-xl" handleClick={hadleConnectWallet} />
 }
 
 const Navbar = () => {
   // Give us access to weather we are in the dark or light theme
   const { theme, setTheme } = useTheme()
+  const router = useRouter()
   const [active, setActive] = useState('Explore NFTs')
 
   const handleChangeTheme = () => {
     setTheme(theme === 'light' ? 'dark' : 'light')
   }
   console.log({ theme })
+
+  const handleCreate = () => {
+    setActive('')
+    router.push('/create-nft')
+    console.log('Button clicked')
+  }
+
+  const hadleConnectWallet = () => {
+    console.log('Connect wallet')
+  }
+
   return (
     <nav className="flexBetween w-full fixed z-10 p-4 flex-row border-b dark:bg-nft-dark bg-white dark:border-nft-black-1 border-nft-gray-1">
       <div className="flex flex-1 flex-row justify start">
@@ -82,7 +94,7 @@ const Navbar = () => {
       {/* Navbar Links */}
       <div className="md:hidden flex">
         <MenuItems active={active} setActive={setActive} />
-        <ButtonGroup />
+        <ButtonGroup handleCreate={handleCreate} hadleConnectWallet={hadleConnectWallet} />
       </div>
     </nav>
   )
