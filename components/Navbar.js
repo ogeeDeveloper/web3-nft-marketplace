@@ -44,6 +44,7 @@ const Navbar = () => {
   const { theme, setTheme } = useTheme()
   const router = useRouter()
   const [active, setActive] = useState('Explore NFTs')
+  const [isOpen, setIsOpen] = useState(false)
 
   const handleChangeTheme = () => {
     setTheme(theme === 'light' ? 'dark' : 'light')
@@ -89,12 +90,49 @@ const Navbar = () => {
             <div className="w-3 h-3 absolute bg-white rounded-full ball" />
           </label>
         </div>
+
+        {/* Navbar Links */}
+        <div className="md:hidden flex">
+          <MenuItems active={active} setActive={setActive} />
+          <ButtonGroup handleCreate={handleCreate} hadleConnectWallet={hadleConnectWallet} />
+        </div>
       </div>
 
-      {/* Navbar Links */}
-      <div className="md:hidden flex">
-        <MenuItems active={active} setActive={setActive} />
-        <ButtonGroup handleCreate={handleCreate} hadleConnectWallet={hadleConnectWallet} />
+      {/* Mobile Navigation */}
+      <div className="hidden md:flex ml-2">
+        {isOpen ? (
+          <Image
+            src={images.cross}
+            objectFit="contain"
+            width={20}
+            height={20}
+            alt="Cross icon"
+            onClick={() => setIsOpen(false)}
+            className={theme === 'light' && 'filter invert'}
+          />
+        ) : (
+          <Image
+            src={images.menu}
+            objectFit="contain"
+            width={25}
+            height={25}
+            alt="Menu icon"
+            onClick={() => setIsOpen(true)}
+            className={theme === 'light' && 'filter invert'}
+          />
+        )}
+
+        {/* Show menu only if isOpen is set to true  */}
+        {isOpen && (
+          <div className="flex flex-col fixed z-10 inset-0 top-65 dark:bg-nft-dark bg-white nav-h justify-between">
+            <div className="flex-1 p-4">
+              <MenuItems active={active} setActive={setActive} isMobile />
+            </div>
+            <div className="p-4 border-t dark:border-nft-black-1 border-nft-gray-1">
+              <ButtonGroup handleCreate={handleCreate} hadleConnectWallet={hadleConnectWallet} />
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   )
